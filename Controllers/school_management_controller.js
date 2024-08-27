@@ -94,7 +94,7 @@ const listAllSchools = async (req, res) => {
         res.status(500).json({ message: 'Database error', details: error.message });
     }
 };
-
+ 
 
 //Update school details
 const updateSchoolInfo = async (req, res) => {
