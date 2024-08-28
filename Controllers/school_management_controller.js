@@ -1,5 +1,33 @@
 const db = require('../ConnectDb/db');
 
+//create table
+const createSchoolTable=async (req,res)=>{
+    try {
+        const data = await db.query(`
+            CREATE TABLE school1 (
+              id INT PRIMARY KEY AUTO_INCREMENT,
+              name VARCHAR(255) NOT NULL,
+              address VARCHAR(255) NOT NULL,
+              latitude DECIMAL(8, 5) NOT NULL,
+              longitude DECIMAL(8, 5) NOT NULL
+            );
+          `);
+          
+        res.status(200).send({
+            message:"Successfully formed",
+            data
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(404).send({
+            message:"Table not formed",
+            error
+        })
+    }
+}
+
+
 //Referred from web
 // Haversine formula to calculate the distance between two coordinates
 const calculateGeographicalDistance = (lat1, lon1, lat2, lon2) => {
@@ -45,7 +73,7 @@ const addSchoolController = async (req, res) => {
 
         // Inserting data into the database
         const [result] = await db.query(
-            `INSERT INTO school (name, address, latitude, longitude) VALUES (?, ?, ?, ?)`,
+            `INSERT INTO school1 (name, address, latitude, longitude) VALUES (?, ?, ?, ?)`,
             [name, address, latitudeNumber, longitudeNumber]
         );
 
@@ -76,7 +104,7 @@ const listAllSchools = async (req, res) => {
         }
 
         // Fetching schools from the database
-        const [schoolRecords] = await db.execute('SELECT * FROM school');
+        const [schoolRecords] = await db.execute('SELECT * FROM school1');
 
         // Calculate distances and sort
         const schoolsSortedByProximity = schoolRecords.map(school => {
@@ -147,7 +175,7 @@ const updateSchoolInfo = async (req, res) => {
 
         // Update the school info in the database
         const [result] = await db.query(
-            `UPDATE school SET name = ?, address = ?, latitude = ?, longitude = ? WHERE id = ?`,
+            `UPDATE school1 SET name = ?, address = ?, latitude = ?, longitude = ? WHERE id = ?`,
             [name, address, latitudeNumber, longitudeNumber, schoolId]
         );
 
@@ -185,7 +213,7 @@ const deleteSchoolInfo = async (req, res) => {
 
         // Deleting from the school from the database
         const [result] = await db.query(
-            `DELETE FROM school WHERE id = ?`,
+            `DELETE FROM school1 WHERE id = ?`,
             [schoolId]
         );
 
@@ -211,4 +239,4 @@ const deleteSchoolInfo = async (req, res) => {
 
 
 
-module.exports = { addSchoolController, listAllSchools,updateSchoolInfo,deleteSchoolInfo };
+module.exports = { addSchoolController, listAllSchools,updateSchoolInfo,deleteSchoolInfo,createSchoolTable };
