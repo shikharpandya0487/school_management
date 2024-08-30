@@ -13,11 +13,11 @@ const PORT = process.env.PORT || 4000;
 
 //db connection
 
-// pool.query('SELECT 1').then(() => {
-//     console.log("MySQL DB connected");
-//     app.listen(PORT, () => {
-//         console.log("Listening on port", PORT);
-//     });
-// }).catch((err) => {
-//     console.log("Error connecting to the database:", err);
-// });
+pool.query('SELECT 1').then(() => {
+    console.log("MySQL DB connected");
+    app.listen(PORT, () => {
+        console.log("Listening on port", PORT);
+    });
+}).catch((err) => {
+    console.log("Error connecting to the database:", err);
+});
